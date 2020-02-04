@@ -807,7 +807,7 @@
   }
 
   function toggleCatcher(show) {
-    const cc = $("#overlay"), modals = ["#prefs-box", "#about-box", "#entry-menu", "#drop-select", ".info-box"];
+    const cc = $("#overlay"), modals = ["#prefs-box", "#about-box", "#entry-menu", "#drop-select", ".info-box", "#confirmation-box"];
 
     if (show === undefined) {
       show = modals.some((selector) => { return $(selector).hasClass("in"); });
@@ -1127,9 +1127,20 @@
       });
 
       view.find(".delete-file").off("click").on("click", function() {
+        $("#confirmation-box").addClass("in")
+        toggleCatcher();
         if (droppy.socketWait) return;
-        showSpinner(view);
-        sendMessage(view[0].vId, "DELETE_FILE", $(this).parents(".data-row")[0].dataset.id);
+        const lineToDelete = $(this);
+        $("#confirmation-button-yes").off("click").on("click", function() {
+          $("#confirmation-box").removeClass("in");
+          showSpinner(view);
+          sendMessage(view[0].vId, "DELETE_FILE", lineToDelete.parents(".data-row")[0].dataset.id);
+          toggleCatcher(false);
+        });
+        $("#confirmation-button-no").off("click").on("click", function() {
+          $("#confirmation-box").removeClass("in");
+          toggleCatcher(false);
+        });
       });
 
       view.find(".icon-play, .icon-view").off("click").on("click", function() {
