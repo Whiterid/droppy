@@ -1127,17 +1127,17 @@
       });
 
       view.find(".delete-file").off("click").on("click", function() {
-        $("#confirmation-box").addClass("in")
+        $("#confirmation-box").addClass("in");
         toggleCatcher();
         if (droppy.socketWait) return;
         const lineToDelete = $(this);
-        $("#confirmation-button-yes").off("click").on("click", function() {
+        $("#confirmation-button-yes").off("click").on("click", () => {
           $("#confirmation-box").removeClass("in");
           showSpinner(view);
           sendMessage(view[0].vId, "DELETE_FILE", lineToDelete.parents(".data-row")[0].dataset.id);
           toggleCatcher(false);
         });
-        $("#confirmation-button-no").off("click").on("click", function() {
+        $("#confirmation-button-no").off("click").on("click", () => {
           $("#confirmation-box").removeClass("in");
           toggleCatcher(false);
         });
